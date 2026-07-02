@@ -1,6 +1,6 @@
 # AI mower 
 
-Goal: modify a YardCard V100 robot mower to make it Open Source :-)
+A stock camera-based (AI) robot mower (YardCare V100) converted with Open Source software.
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/e26136c8-1d55-498d-adec-94559e20222e" />
 
