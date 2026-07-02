@@ -1,10 +1,10 @@
 # AI mower 
 
-Goal: nodify a YardCard V100 robot mower to make it Open Source :-)
+Goal: modify a YardCard V100 robot mower to make it Open Source :-)
 
-<img width="1221" height="732" alt="image" src="https://github.com/user-attachments/assets/e26136c8-1d55-498d-adec-94559e20222e" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/e26136c8-1d55-498d-adec-94559e20222e" />
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/722970a7-33bd-4e6d-8874-7c65266a3eca" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/722970a7-33bd-4e6d-8874-7c65266a3eca" />
 
 https://www.youtube.com/watch?v=QmxUNqRI3CY
 
