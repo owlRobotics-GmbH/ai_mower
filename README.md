@@ -1,6 +1,6 @@
 # AI mower 
 
-A stock camera-based (AI) robot mower (YardCare V100) converted with Open Source software.
+camera-based (AI) robot mower that you can retrain yourself (within a few minutes) to your specific environment
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/e26136c8-1d55-498d-adec-94559e20222e" />
 
@@ -10,7 +10,7 @@ https://www.youtube.com/watch?v=QmxUNqRI3CY
 
 ## Requirements
 
-- YardCare V100 chassis with DC gear motors and brushless mowing motor
+- Your own robot mower chassis with motors, or: YardCare V100 chassis with DC gear motors and brushless mowing motor
 - SMARTMOW/owlRobotics components: BLDC drivers (those also support DC motors)
 - OrangePI5Pro (recommended) or Raspberry PI5 (with further changes)
 - magnetic encoder (AS5600) for mowing motor
