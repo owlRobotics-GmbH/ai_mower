@@ -26,7 +26,7 @@ A camera-based (AI) robot mower that you can retrain yourself (within a few minu
    service.sh  (and choose start service)
    ```
 3. launch 'http://orangepi5pro.local:8090' on a remote browser
-4. Put mower on lawn and press 'START' via web UI or via button 
+4. Put mower on lawn and press 'START' via web UI or via robot STOP button (see video)
  
 Example video:  
 
