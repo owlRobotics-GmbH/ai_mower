@@ -6,10 +6,6 @@ A camera-based (AI) robot mower that you can retrain yourself (within a few minu
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/722970a7-33bd-4e6d-8874-7c65266a3eca" />
 
-Example video:  
-
-https://www.youtube.com/watch?v=QmxUNqRI3CY
-
 
 ## Requirements
 
@@ -22,11 +18,19 @@ https://www.youtube.com/watch?v=QmxUNqRI3CY
 
 ## Installation
 1. Install Ubuntu and CAN drivers on your OrangePI5Pro as described here: https://github.com/owlRobotics-GmbH/owlRobotPlatform
-2. Type in Linux terminal:  git clone https://github.com/owlRobotics-GmbH/ai_mower
-3. cd ai_mower
-4. install_orangepi5_cpu_deps.sh
-5. service.sh  (and choose start service)
-6. launch 'http://orangepi5pro.local:8090' on a remote browser
+2. Type in Linux terminal:
+   ```
+   git clone https://github.com/owlRobotics-GmbH/ai_mower
+   cd ai_mower
+   install_orangepi5_cpu_deps.sh
+   service.sh  (and choose start service)
+   ```
+3. launch 'http://orangepi5pro.local:8090' on a remote browser
+4. Put mower on lawn and press 'START' via web UI or via button 
+ 
+Example video:  
+
+https://www.youtube.com/watch?v=QmxUNqRI3CY
 
 ## Forum (for parts, photos, discussions etc.)
 https://forum.ardumower.de/threads/rasenroboter-software-für-kleingarten-kamera-umbau-yardcare-v100-auf-opensource.25658/
