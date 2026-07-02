@@ -1,0 +1,18 @@
+# Optional FastDepth dependency set.
+#
+# Orange Pi 5 Pro / RK3588 / Ubuntu 22.04 / Python 3.10:
+# install from the official PyTorch CPU index, not from the default PyPI index.
+#
+#   .venv/bin/python -m pip install \
+#     --index-url https://download.pytorch.org/whl/cpu \
+#     --extra-index-url https://pypi.org/simple \
+#     -r requirements_fastdepth.txt
+#
+# This resolves to the official AArch64 CPU wheel:
+# torch-2.3.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+#
+# torchvision is intentionally omitted. The local FastDepth model file imports
+# torchvision.models but does not use it for inference; fast_depth_runtime.py
+# provides a minimal stub when torchvision is absent.
+torch==2.3.1
+pillow

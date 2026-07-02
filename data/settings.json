@@ -1,0 +1,41 @@
+{
+  "selected_profile": "garten",
+  "camera": {
+    "index": "auto",
+    "resolution": "1024x768"
+  },
+  "camera_controls": {
+    "auto_exposure": true,
+    "exposure_time": 590,
+    "dynamic_framerate": false
+  },
+  "drive_options": {
+    "swap_sides": false,
+    "invert_left": true,
+    "invert_right": false,
+    "pwm_scale": 1.0,
+    "pwm_ramp_rate": 1.0,
+    "mower_pwm_ramp_rate": 0.25,
+    "mower_enabled": false,
+    "mower_pwm": 1.0
+  },
+  "auto_options": {
+    "forward_speed": 0.47,
+    "turn_speed": 0.32,
+    "mower_auto_pwm": 1.0,
+    "turn_reverse_seconds": 0.8,
+    "turn_stall_reverse_seconds": 2.0,
+    "turn_stall_min_seconds": 7.2,
+    "turn_stall_min_position_delta": 15.0,
+    "turn_pause_seconds": 2.0,
+    "turn_stall_recovery_enabled": true,
+    "drive_stall_recovery_enabled": true,
+    "drive_stall_min_seconds": 3.2,
+    "drive_stall_min_velocity": 12.0,
+    "drive_stall_min_points": 40
+  },
+  "classification": {
+    "running": false,
+    "profile": ""
+  }
+}

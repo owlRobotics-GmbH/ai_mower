@@ -1,0 +1,12 @@
+{
+  "id": "kunstrasen",
+  "name": "kunstrasen",
+  "created": 1779276700.5175304,
+  "camera_crop": {
+    "enabled": true,
+    "x": 0.28,
+    "y": 0.05,
+    "w": 0.5,
+    "h": 0.5
+  }
+}

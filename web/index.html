@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Mower Training</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="brand-title">
+        <img src="/logo.avif" alt="" class="brand-logo" width="360" height="57">
+        <h1>AI Mower</h1>
+        <div class="language-menu">
+          <button type="button" id="languageMenuButton" class="flag-button flag-de" aria-haspopup="true" aria-expanded="false" aria-label="Sprache" title="Sprache" data-i18n-attr="aria-label:language.label;title:language.label"><span>DE</span></button>
+          <div id="languageMenu" class="language-menu-popover" role="menu" aria-label="Sprache" data-i18n-attr="aria-label:language.label">
+            <button type="button" class="flag-option" data-language="de" role="menuitem"><span class="flag-swatch flag-de"></span><span>Deutsch</span></button>
+            <button type="button" class="flag-option" data-language="en" role="menuitem"><span class="flag-swatch flag-en"></span><span>English</span></button>
+          </div>
+        </div>
+      </div>
+      <div id="status" class="status" data-i18n="status.connecting">Verbinde...</div>
+    </div>
+    <nav class="tabs" aria-label="Ansichten" data-i18n-attr="aria-label:tabs.views">
+      <button data-tab="trainingTab" data-i18n="tab.training">Training</button>
+      <button class="active" data-tab="robotTab" data-i18n="tab.robot">Roboter-Steuerung</button>
+    </nav>
+  </header>
+
+  <main id="trainingTab" class="shell tab-panel">
+    <aside class="panel controls">
+      <section>
+        <h2 data-i18n="profile.heading">Profil</h2>
+        <select id="profileSelect"></select>
+        <div class="profile-create">
+          <input id="profileName" type="text" placeholder="Profilname" data-i18n-attr="placeholder:profile.name">
+          <button id="createProfile" data-i18n="profile.create">Profil anlegen</button>
+        </div>
+        <div id="profileStats" class="stats"></div>
+      </section>
+
+      <section>
+        <h2 data-i18n="capture.heading">Daten erfassen</h2>
+        <label data-i18n="capture.class">Klasse</label>
+        <div class="segmented" id="labelButtons">
+          <button data-label="gras" class="active" data-i18n="label.lawn">Lawn</button>
+          <button data-label="pavement" data-i18n="label.nonLawn">Non-lawn</button>
+        </div>
+        <label data-i18n="capture.dataset">Datensatz</label>
+        <div class="segmented" id="splitButtons">
+          <button data-split="train" class="active" data-i18n="split.training">Training</button>
+          <button data-split="valid" data-i18n="split.validation">Validierung</button>
+        </div>
+        <button id="captureBtn" data-i18n="capture.addCameraImage">Bild von Kamera hinzufügen</button>
+        <input id="uploadInput" type="file" accept="image/*" multiple>
+      </section>
+
+      <section>
+        <h2 data-i18n="crop.heading">Kamera-Ausschnitt</h2>
+        <label class="check-row"><input id="cropEnabled" type="checkbox"> <span data-i18n="crop.use">Ausschnitt verwenden</span></label>
+        <div class="crop-grid">
+          <label><span data-i18n="crop.x">X %</span><input id="cropX" type="number" min="0" max="95" value="0"></label>
+          <label><span data-i18n="crop.y">Y %</span><input id="cropY" type="number" min="0" max="95" value="0"></label>
+          <label><span data-i18n="crop.width">Breite %</span><input id="cropW" type="number" min="5" max="100" value="100"></label>
+          <label><span data-i18n="crop.height">Hoehe %</span><input id="cropH" type="number" min="5" max="100" value="100"></label>
+        </div>
+        <div class="row">
+          <button id="saveCropBtn" data-i18n="crop.save">Ausschnitt speichern</button>
+          <button id="resetCropBtn" data-i18n="crop.reset">Reset</button>
+        </div>
+        <div class="small" data-i18n="crop.hint">Der Ausschnitt wird beim Kamera-Capture und beim Live-Test vor der Klassifikation angewendet.</div>
+      </section>
+
+      <section>
+        <h2 data-i18n="training.heading">Training</h2>
+        <label data-i18n="training.epochs">Epochen</label>
+        <input id="epochs" type="number" min="1" max="100" value="16">
+        <label data-i18n="training.batch">Batch</label>
+        <input id="batchSize" type="number" min="1" max="64" value="16">
+        <button id="trainBtn" data-i18n="training.start">Training starten</button>
+        <div id="trainState" class="small"></div>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <div class="toolbar images-toolbar">
+        <div>
+          <h2><span data-i18n="images.heading">Trainingsbilder</span> <span id="trainingImageCounts" class="heading-counts">train 0 / valid 0</span></h2>
+          <div class="small" data-i18n="images.hint">Bilder per Auswahl nach Klasse und Split verschieben.</div>
+        </div>
+        <div class="row image-toolbar-actions">
+          <button id="toggleImagesBtn" class="mobile-only" type="button" aria-expanded="true" data-i18n="images.collapse">Einklappen</button>
+          <button id="refreshBtn" data-i18n="actions.refresh">Aktualisieren</button>
+        </div>
+      </div>
+      <div id="imageGrid" class="image-grid"></div>
+    </section>
+
+    <aside class="panel live">
+      <section>
+        <h2 data-i18n="camera.live">Live-Kamera</h2>
+        <div class="segmented stream-mode" data-stream-mode="training">
+          <button data-view="rgb" class="active" data-i18n="camera.viewRgb">RGB</button>
+          <button data-view="depth" data-i18n="camera.viewDepth">Depth</button>
+          <button data-view="seg" data-i18n="camera.viewSeg">Seg</button>
+        </div>
+        <div class="camera-view">
+          <img id="cameraStream" class="stream" alt="Kamerastream" data-i18n-attr="alt:camera.streamAlt">
+          <div id="roiDragBox" class="roi-drag-box"></div>
+        </div>
+      </section>
+      <section>
+        <div class="row">
+          <button id="startTestBtn" data-i18n="test.start">Klassifikation starten</button>
+          <button id="stopTestBtn" data-i18n="actions.stop">Stop</button>
+        </div>
+        <img id="testStream" class="stream" alt="Teststream" data-i18n-attr="alt:test.streamAlt">
+        <div id="testState" class="small"></div>
+      </section>
+      <section>
+        <h2 data-i18n="metrics.heading">Metriken</h2>
+        <canvas id="metricPlot" width="420" height="220"></canvas>
+      </section>
+    </aside>
+  </main>
+
+  <main id="robotTab" class="robot-shell tab-panel active">
+    <section class="robot-camera">
+      <div class="toolbar">
+        <div>
+          <h2 data-i18n="camera.live">Live-Kamera</h2>
+          <div class="small" data-i18n="robot.cameraHint">Verwendet die Kamera-Einstellungen aus der Roboter-Steuerung.</div>
+        </div>
+        <div class="segmented stream-mode" data-stream-mode="robot">
+          <button data-view="rgb" class="active" data-i18n="camera.viewRgb">RGB</button>
+          <button data-view="depth" data-i18n="camera.viewDepth">Depth</button>
+          <button data-view="seg" data-i18n="camera.viewSeg">Seg</button>
+        </div>
+      </div>
+      <div class="robot-view">
+        <img id="robotCameraStream" class="stream robot-stream" alt="Roboter-Kamerastream" data-i18n-attr="alt:robot.cameraStreamAlt">
+        <div id="robotJoystick" class="joystick-field" aria-label="Joystick" role="application" data-i18n-attr="aria-label:robot.joystick">
+          <div class="joystick-cross horizontal"></div>
+          <div class="joystick-cross vertical"></div>
+          <div id="joystickKnob" class="joystick-knob"></div>
+        </div>
+      </div>
+      <div class="robot-score-panel">
+        <label class="check-row"><input id="robotScorePlotToggle" type="checkbox" checked> <span data-i18n="robot.showClassificationPlot">Klassifizierungsplot anzeigen</span></label>
+        <canvas id="robotScorePlot" width="640" height="160"></canvas>
+        <canvas id="robotMotionPlot" width="640" height="160"></canvas>
+      </div>
+    </section>
+
+    <aside class="panel robot-control">
+      <div class="robot-control-tabs" aria-label="Roboter-Steuerung" data-i18n-attr="aria-label:tab.robot">
+        <button class="active" data-robot-panel="robotControlPanel" data-i18n="robot.tab.robot">Roboter</button>
+        <button data-robot-panel="robotSpeedPanel" data-i18n="robot.tab.speed">Geschwindigkeit</button>
+        <button data-robot-panel="robotCameraPanel" data-i18n="robot.tab.camera">Kamera</button>
+        <button data-robot-panel="robotMotorPanel" data-i18n="robot.tab.motor">Motor</button>
+        <button data-robot-panel="robotComputerPanel" data-i18n="robot.tab.computer">Computer</button>
+      </div>
+
+      <section id="robotControlPanel" class="robot-control-panel active">
+        <h2 data-i18n="robot.controlHeading">Roboter-Steuerung</h2>
+        <div class="robot-actions">
+          <button id="robotStopBtn" class="robot-button stop">STOP</button>
+          <button id="robotStartBtn" class="robot-button start">START</button>
+          <button id="robotSayMaehBtn" class="robot-button sound" data-i18n="robot.sayMaeh">Sag mäh!</button>
+        </div>
+        <h2 data-i18n="robot.readoutHeading">Auswertung</h2>
+        <div class="robot-readout">
+          <div><span data-i18n="robot.mode">Modus</span><strong id="robotMode">IDLE</strong></div>
+          <div><span data-i18n="robot.classificationMs">Klassifikation ms</span><strong id="robotStatus">-</strong></div>
+          <div><span data-i18n="profile.heading">Profil</span><strong id="robotProfile">-</strong></div>
+          <div><span data-i18n="robot.battery">Akku</span><strong id="robotBattery">-</strong></div>
+          <div><span data-i18n="capture.class">Klasse</span><strong id="robotLabel">-</strong></div>
+          <div><span data-i18n="label.lawn">Lawn</span><strong id="robotLawn">-</strong></div>
+          <div><span data-i18n="robot.command">Kommando</span><strong id="robotCommand">-</strong></div>
+          <div><span data-i18n="robot.joystick">Joystick</span><strong id="robotJoystickState">0.00 / 0.00</strong></div>
+          <div><span data-i18n="robot.motors">Motoren</span><strong id="robotDriveState">-</strong></div>
+        </div>
+        <div id="robotError" class="small"></div>
+      </section>
+
+      <section id="robotSpeedPanel" class="robot-control-panel">
+        <h2 data-i18n="speed.heading">Auto-Geschwindigkeit</h2>
+        <label><span data-i18n="speed.forward">Vorwärts</span> <span id="autoForwardValue">30%</span></label>
+        <input id="autoForwardSpeed" type="range" min="20" max="100" value="30">
+        <label><span data-i18n="speed.turn">Drehen</span> <span id="autoTurnValue">30%</span></label>
+        <input id="autoTurnSpeed" type="range" min="20" max="100" value="30">
+        <label><span data-i18n="speed.reverseBeforeTurn">Rueckfahrt vor Drehung</span> <span id="autoTurnReverseValue">0.0 s</span></label>
+        <input id="autoTurnReverseSeconds" type="range" min="0.0" max="5.0" step="0.1" value="0.0">
+        <label><span data-i18n="speed.turnPause">Dreh-Impulspause</span> <span id="autoTurnPauseValue">2.0 s</span></label>
+        <input id="autoTurnPauseSeconds" type="range" min="0.2" max="5.0" step="0.1" value="2.0">
+        <label class="check-row"><input id="autoTurnStallRecovery" type="checkbox" checked> <span data-i18n="speed.turnStallRecovery">Drehblockaden erkennen</span></label>
+        <label><span data-i18n="speed.turnStallMinSeconds">Drehblockade Dauer</span> <span id="autoTurnStallMinSecondsValue">2.5 s</span></label>
+        <input id="autoTurnStallMinSeconds" type="range" min="0.2" max="10.0" step="0.1" value="2.5">
+        <label><span data-i18n="speed.turnStallMinDelta">Drehblockade Mindestbewegung</span> <span id="autoTurnStallMinDeltaValue">15 px</span></label>
+        <input id="autoTurnStallMinDelta" type="range" min="1" max="200" step="1" value="15">
+        <label class="check-row"><input id="autoDriveStallRecovery" type="checkbox" checked> <span data-i18n="speed.driveStallRecovery">Fahrblockaden erkennen</span></label>
+        <label><span data-i18n="speed.driveStallMinSeconds">Fahrblockade Dauer</span> <span id="autoDriveStallMinSecondsValue">2.5 s</span></label>
+        <input id="autoDriveStallMinSeconds" type="range" min="0.2" max="10.0" step="0.1" value="2.5">
+        <label><span data-i18n="speed.driveStallMinVelocity">Fahrblockade Geschwindigkeit</span> <span id="autoDriveStallMinVelocityValue">12 px/s</span></label>
+        <input id="autoDriveStallMinVelocity" type="range" min="0" max="200" step="1" value="12">
+        <label><span data-i18n="speed.driveStallMinPoints">Fahrblockade Trackingpunkte</span> <span id="autoDriveStallMinPointsValue">40 pts</span></label>
+        <input id="autoDriveStallMinPoints" type="range" min="1" max="500" step="1" value="40">
+        <label><span data-i18n="speed.reverseOnStall">Rueckfahrt bei Blockade</span> <span id="autoTurnStallReverseValue">2.0 s</span></label>
+        <input id="autoTurnStallReverseSeconds" type="range" min="0.0" max="5.0" step="0.1" value="2.0">
+      </section>
+
+      <section id="robotCameraPanel" class="robot-control-panel">
+        <h2 data-i18n="camera.settings">Kamera-Einstellungen</h2>
+        <div class="robot-readout">
+          <div><span data-i18n="robot.cameraFps">Kamera FPS</span><strong id="robotCamera">-</strong></div>
+        </div>
+        <label data-i18n="robot.tab.camera">Kamera</label>
+        <input id="cameraIndex" type="text" value="auto" inputmode="numeric">
+        <label data-i18n="camera.resolution">Auflösung</label>
+        <select id="cameraResolution">
+          <option value="" data-i18n="status.loading">Wird geladen...</option>
+        </select>
+        <div id="cameraResolutionState" class="small"></div>
+        <label class="check-row"><input id="cameraAutoExposure" type="checkbox"> <span data-i18n="camera.autoExposure">Automatische Belichtung</span></label>
+        <label class="check-row"><input id="cameraDynamicFramerate" type="checkbox"> <span data-i18n="camera.dynamicFramerate">Dynamische Framerate</span></label>
+        <label><span data-i18n="camera.exposureTime">Belichtungszeit</span> <span id="cameraExposureValue">-</span></label>
+        <input id="cameraExposureTime" type="range" min="1" max="5000" value="625">
+        <div id="cameraControlsState" class="small"></div>
+      </section>
+
+      <section id="robotMotorPanel" class="robot-control-panel">
+        <h2 data-i18n="motor.heading">Motor-Zuordnung</h2>
+        <div class="robot-readout">
+          <div><span data-i18n="robot.driveCurrent">Getriebestrom</span><strong id="robotDriveCurrent">-</strong></div>
+          <div><span data-i18n="robot.mowerCurrent">Mähstrom</span><strong id="robotMowerCurrent">-</strong></div>
+        </div>
+        <label class="check-row"><input id="driveSwapSides" type="checkbox"> <span data-i18n="motor.swapSides">Links/rechts tauschen</span></label>
+        <label class="check-row"><input id="driveInvertLeft" type="checkbox"> <span data-i18n="motor.invertLeft">Linken Motor invertieren</span></label>
+        <label class="check-row"><input id="driveInvertRight" type="checkbox"> <span data-i18n="motor.invertRight">Rechten Motor invertieren</span></label>
+        <label class="check-row"><input id="mowerEnabled" type="checkbox" checked> <span data-i18n="motor.mowerEnabled">Mähmotor aktiv</span></label>
+        <label><span data-i18n="motor.mowerPwm">Mähmotor PWM</span> <span id="mowerPwmValue">100%</span></label>
+        <input id="mowerPwm" type="range" min="0" max="100" step="5" value="100">
+        <label><span data-i18n="motor.pwmRamp">Fahrmotor PWM-Rampe</span> <span id="driveRampValue">100%/s</span></label>
+        <input id="driveRampRate" type="range" min="0" max="300" step="10" value="100">
+        <label><span data-i18n="motor.mowerPwmRamp">Mähmotor PWM-Rampe</span> <span id="mowerRampValue">25%/s</span></label>
+        <input id="mowerRampRate" type="range" min="0" max="100" step="5" value="25">
+      </section>
+
+      <section id="robotComputerPanel" class="robot-control-panel">
+        <h2 data-i18n="robot.tab.computer">Computer</h2>
+        <div class="robot-readout">
+          <div><span data-i18n="system.cpu">CPU</span><strong id="robotCpu">-</strong></div>
+          <div><span data-i18n="system.ram">RAM</span><strong id="robotRam">-</strong></div>
+          <div><span data-i18n="system.disk">Disk</span><strong id="robotDisk">-</strong></div>
+          <div><span data-i18n="system.cpuTemp">CPU Temp</span><strong id="robotCpuTemp">-</strong></div>
+        </div>
+        <div class="robot-actions system-actions">
+          <button id="systemRebootBtn" class="robot-button system">REBOOT</button>
+          <button id="systemShutdownBtn" class="robot-button system danger">SHUTDOWN</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <section class="log-panel global-log">
+    <div class="toolbar">
+      <div>
+        <h2 data-i18n="log.heading">Session-Log</h2>
+        <div class="small" data-i18n="log.hint">Kopierbarer Verlauf fuer Training und Roboter-Steuerung.</div>
+      </div>
+      <div class="row log-actions">
+        <button id="copyLogBtn" data-i18n="actions.copy">Kopieren</button>
+        <button id="clearLogBtn" data-i18n="actions.clear">Leeren</button>
+      </div>
+    </div>
+    <pre id="sessionLog" class="session-log"></pre>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+</html>

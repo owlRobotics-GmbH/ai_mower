@@ -1,0 +1,12 @@
+{
+  "id": "garten",
+  "name": "garten",
+  "created": 1779272377.1834264,
+  "camera_crop": {
+    "enabled": true,
+    "x": 0.25,
+    "y": 0.5,
+    "w": 0.5,
+    "h": 0.5
+  }
+}
