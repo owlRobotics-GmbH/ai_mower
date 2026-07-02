@@ -18,11 +18,12 @@ https://www.youtube.com/watch?v=QmxUNqRI3CY
 - USB sound card module
 
 ## Installation
+1. Install Ubuntu and CAN drivers on your OrangePI5Pro as described here: https://github.com/owlRobotics-GmbH/owlRobotPlatform
 1. git clone https://github.com/owlRobotics-GmbH/ai_mower
 2. cd ai_mower
 3. install_orangepi5_cpu_deps.sh
 4. service.sh  (and choose start service)
-5. launch 'http://orangepi5.local:8090' on a remote browser
+5. launch 'http://orangepi5pro.local:8090' on a remote browser
 
 ## Forum (for parts, discussions etc.)
 https://forum.ardumower.de/threads/rasenroboter-software-für-kleingarten-kamera-umbau-yardcare-v100-auf-opensource.25658/
