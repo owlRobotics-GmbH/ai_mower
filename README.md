@@ -24,7 +24,7 @@ https://www.youtube.com/watch?v=QmxUNqRI3CY
 4. service.sh  (and choose start service)
 5. launch 'http://orangepi5.local:8090' on a remote browser
 
-## Forum
+## Forum (for parts, discussions etc.)
 https://forum.ardumower.de/threads/rasenroboter-software-für-kleingarten-kamera-umbau-yardcare-v100-auf-opensource.25658/
 
 
