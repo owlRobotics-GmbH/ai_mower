@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=QmxUNqRI3CY
 
 ## Installation
 1. Install Ubuntu and CAN drivers on your OrangePI5Pro as described here: https://github.com/owlRobotics-GmbH/owlRobotPlatform
-2. git clone https://github.com/owlRobotics-GmbH/ai_mower
+2. Type in Linux terminal:  git clone https://github.com/owlRobotics-GmbH/ai_mower
 3. cd ai_mower
 4. install_orangepi5_cpu_deps.sh
 5. service.sh  (and choose start service)
