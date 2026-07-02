@@ -1,12 +1,12 @@
 # AI mower 
 
-A camera-based (AI) robot mower that you can retrain yourself (within a few minutes) to your specific environment. It comes pre-trained to detect lawn/non-lawn, however you can retrain with the integrated web-interface by making example photos with the mower's camera (training lawn/non-lawn examples).
+A camera-based (AI) robot mower that you can retrain yourself (within a few minutes) to your specific environment (small garden). It comes pre-trained to detect lawn/non-lawn, however you can retrain with the integrated web-interface by making example photos with the mower's camera (training lawn/non-lawn examples).
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/e26136c8-1d55-498d-adec-94559e20222e" />
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/722970a7-33bd-4e6d-8874-7c65266a3eca" />
 
-https://www.youtube.com/watch?v=QmxUNqRI3CY
+Example video:  https://www.youtube.com/watch?v=QmxUNqRI3CY
 
 ## Requirements
 
