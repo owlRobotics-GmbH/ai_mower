@@ -6,7 +6,10 @@ A camera-based (AI) robot mower that you can retrain yourself (within a few minu
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/722970a7-33bd-4e6d-8874-7c65266a3eca" />
 
-Example video:  https://www.youtube.com/watch?v=QmxUNqRI3CY
+Example video:  
+
+https://www.youtube.com/watch?v=QmxUNqRI3CY
+
 
 ## Requirements
 
